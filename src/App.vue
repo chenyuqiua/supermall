@@ -1,17 +1,20 @@
 <template>
-  <div id="app">
-			<keep-alive><router-view /></keep-alive>
+	<div id="app">
+		<keep-alive exclude="Detail">
+			<router-view />
+		</keep-alive>
 		<main-tab-bar />
-  </div>
+	</div>
 </template>
 
 <script>
 	import MainTabBar from "components/content/mainTabBar/MainTabBar.vue"
 
-export default {
-  name: 'App',
-	components: {
-		MainTabBar
+	export default {
+		name: 'App',
+		components: {
+			MainTabBar
+	
 	}
 }
 </script>
