@@ -34,13 +34,15 @@
 	import TabControl from "components/content/tabControl/TabControl.vue"
 	import GoodsList from "components/content/goods/GoodsList.vue"
 	import Scroll from "components/common/scroll/Scroll.vue"
-	import BackTop from "components/content/backTop/BackTop.vue"
+	// import BackTop from "components/content/backTop/BackTop.vue" 混入backTop--1/4
 	
 	import {getHomeMultidata,getHomeGoods} from "network/home.js"
 	import {debounce} from "common/utils.js"
+	import {itemListenerMixin, backTopMixin} from "common/mixin.js"
 	
 	export default {
 		name: "Home",
+		mixins: [itemListenerMixin, backTopMixin],
 		components: {
 			HomeSwiper,
 			HomeRecommendView,
@@ -49,7 +51,7 @@
 			TabControl,
 			GoodsList,
 			Scroll,
-			BackTop
+			// BackTop 混入backTop--2/4
 		},
 		computed:{
 			showGoods() {
@@ -70,7 +72,7 @@
 					"sell": {page: 0,list: []}
 				},
 				currentType: "pop",
-				isShowBackTop: false,
+				// isShowBackTop: false, 混入backTop--3/4
 				tabOffsetTop:  0,
 				isTabFixed: false,
 				saveY: 0
@@ -81,7 +83,11 @@
 			this.$refs.scroll.refresh()
 		},
 		deactivated() {
+			// 1.保存Y值
 			this.saveY = this.$refs.scroll.getScrollY()
+			
+			// 2、取消全局事件监听
+			this.$bus.$off('itemImgLoad', this.itemImgListener)
 		},
 		
 		// 生命周期函数
@@ -96,12 +102,12 @@
 			this.getHomeGoods("sell")
 		},
 		mounted() {
-			
-			// 1.iteam中图片加载完成的事件监听
+			// 使用了混入
+			/* // 1.iteam中图片加载完成的事件监听
 			const refresh = debounce(this.$refs.scroll.refresh,200)
 			this.$bus.$on("itemImageLoad", () => {
 				refresh()
-			})
+			}) */
 		},
 		methods: {
 			
@@ -121,9 +127,9 @@
 				this.$refs.tabControl1.currentIndex = index;
 				this.$refs.tabControl2.currentIndex = index;
 			},
-			backClick() {
-				this.$refs.scroll.scrollTo(0, 0, 500)
-			},
+			// backClick() {
+			// 	this.$refs.scroll.scrollTo(0, 0, 500)
+			// },混入backTop--4/4
 			
 					// 拿到监听滚动的位置
 			contentScroll(position) {

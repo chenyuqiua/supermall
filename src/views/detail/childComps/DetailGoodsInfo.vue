@@ -37,7 +37,7 @@
       imgLoad() {
         // 判断 当所有的图片都加载完了，进行一次回调就可以了
         if(++this.counter === this.imagesLength) {
-          console.log('图片加载完成');
+          // console.log('图片加载完成');
           this.$emit('imageLoad');
         }
       }
